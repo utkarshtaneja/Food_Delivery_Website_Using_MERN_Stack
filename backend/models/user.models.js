@@ -1,16 +1,11 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
-const validator = require('validator')
-
-const userSchema = new Schema({
+import mongoose from "mongoose";
+import validator from "validator";
+const userSchema = new mongoose.Schema({
     name:{
         type : String,
         required : true
     },
-    location : {
-        type : String,
-        required : true
-    },
+
     email : {
         type : String,
         required : true,
@@ -26,11 +21,12 @@ const userSchema = new Schema({
         type : String,
         required : true
     },
-    date : {
-        type : Date,
-        default : Date.now
+    cartData : {
+        type : Object,
+        default : {}
     }
 });
 
 
-module.exports = mongoose.model('User', userSchema);
+const userModel = mongoose.models.user || mongoose.model('User', userSchema);
+export default userModel;

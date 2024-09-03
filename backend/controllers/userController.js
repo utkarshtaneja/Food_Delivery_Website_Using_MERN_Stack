@@ -1,6 +1,6 @@
-const User = require('../models/User')
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const User = require('../models/user.models.js')
+import bcrypt from "bcrypt"
+import  jwt from "jsonwebtoken"
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -23,7 +23,8 @@ exports.userLogin = async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token  = createToken(user._id);
 
         res.status(200).json({ success: true, token });
 
@@ -31,6 +32,9 @@ exports.userLogin = async (req, res) => {
         console.log(error);
         res.json({success : false});
     }
+}
+const createToken=(id)=>{
+    return jwt.sign({id},process.env.JWT_SECRET,{ expiresIn: '1h' });
 }
 exports.userRegister = async (req, res) => {
     try {
@@ -48,15 +52,14 @@ exports.userRegister = async (req, res) => {
 
         const newUser = new User({
             name,
-            location,
             email,
             password: hashedPassword,
-            date
         });
 
-        await newUser.save();
+       const user =  await newUser.save();
+       const token = createToken(user._id);
 
-        res.status(201).json({ success: true, message: "User registered successfully" });
+        res.status(201).json({ success: true, token,message: "User registered successfully" });
 
     } catch (error) {
         console.log(error);

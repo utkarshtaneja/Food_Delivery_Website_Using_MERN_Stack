@@ -2,6 +2,7 @@
   "name": "food-delivery-website",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"npm run server\" \"npm run client\"",
@@ -21,7 +22,6 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
   "keywords": [],
   "description": ""
 }
